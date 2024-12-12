@@ -1,44 +1,27 @@
-// generateReadme function populating the README.md
-function generateReadme(answers) {
+function generateReadme(data) {
     return `
-<h1 align="center">${answers.projectTitle} 👋</h1>
-![badge](https://img.shields.io/badge/license-${answers.license}-brightgreen)<br />
+# ${data.projectTitle}
 
 ## Description
-🔍 ${answers.description}
-
-## Table of Contents
-- [Description](#description)
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
-- [Contributing](#contributing)
-- [Tests](#tests)
-- [Questions](#questions)
+${data.description}
 
 ## Installation
-💾 ${answers.installation}
+${data.installation}
 
 ## Usage
-💻 ${answers.usage}
+${data.usage}
 
 ## License
-![badge](https://img.shields.io/badge/license-${answers.license}-brightgreen)
-<br />
-This application is covered by the ${answers.license} license. 
+This project is licensed under the ${data.license} license.
 
 ## Contributing
-👪 ${answers.contributing}
+${data.contributing}
 
 ## Tests
-✏️ ${answers.tests}
+${data.tests}
 
 ## Questions
-✋ ${answers.questions}<br />
-<br />
-:octocat: Find me on GitHub: [${answers.username}](https://github.com/${answers.username})<br />
-<br />
-✉️ Email me with any questions: ${answers.email}<br /><br />
+For any issues, please contact me at ${data.email} or find me on GitHub: [${data.username}](https://github.com/${data.username}).
     `;
 }
 
