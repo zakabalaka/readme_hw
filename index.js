@@ -1,127 +1,87 @@
-// External packages
-const inquirer = require('inquirer');
-const fs = require('fs');
-const util = require('util');
+// Declaring the dependencies and variables
+const fs = require("fs");
+const util = require("util");
+const inquirer = require("inquirer");
+const generateReadme = require("./utils/generateReadme")
+const writeFileAsync = util.promisify(fs.writeFile);
 
-// Internal modules
-const api = require('./utils/api.js');
-const generateMarkdown = require('./utils/generateMarkdown.js');
-
-// Inquirer prompts for the user to respond to
-const questions = [
-    {
-        type: 'input',
-        message: "What is your GitHub username? (No @ needed)",
-        name: 'username',
-        default: 'connietran-dev',
-        validate: function (answer) {
-            if (answer.length < 1) {
-                return console.log("A valid GitHub username is required.");
-            }
-            return true;
+//Prompt the user questions to create the README.md
+function promptUser(){
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "projectTitle",
+            message: "What is the project title?",
+        },
+        {
+            type: "input",
+            name: "description",
+            message: "Write a brief description of your project: "
+        },
+        {
+            type: "input",
+            name: "installation",
+            message: "Describe the installation process if any: ",
+        },
+        {
+            type: "input",
+            name: "usage",
+            message: "What is this project usage for?"
+        },
+        {
+            type: "list",
+            name: "license",
+            message: "Chose the appropriate license for this project: ",
+            choices: [
+                "Apache",
+                "Academic",
+                "GNU",
+                "ISC",
+                "MIT",
+                "Mozilla",
+                "Open"
+            ]
+        },
+        {
+            type: "input",
+            name: "contributing",
+            message: "Who are the contributors of this projects?"
+        },
+        {
+            type: "input",
+            name: "tests",
+            message: "Is there a test included?"
+        },
+        {
+            type: "input",
+            name: "questions",
+            message: "What do I do if I have an issue? "
+        },
+        {
+            type: "input",
+            name: "username",
+            message: "Please enter your GitHub username: "
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "Please enter your email: "
         }
-    },
-    {
-        type: 'input',
-        message: "What is the name of your GitHub repo?",
-        name: 'repo',
-        default: 'readme-generator',
-        validate: function (answer) {
-            if (answer.length < 1) {
-                return console.log("A valid GitHub repo is required for a badge.");
-            }
-            return true;
-        }
-    },
-    {
-        type: 'input',
-        message: "What is the title of your project?",
-        name: 'title',
-        default: 'Project Title',
-        validate: function (answer) {
-            if (answer.length < 1) {
-                return console.log("A valid project title is required.");
-            }
-            return true;
-        }
-    },
-    {
-        type: 'input',
-        message: "Write a description of your project.",
-        name: 'description',
-        default: 'Project Description',
-        validate: function (answer) {
-            if (answer.length < 1) {
-                return console.log("A valid project description is required.");
-            }
-            return true;
-        }
-    },
-    {
-        type: 'input',
-        message: "If applicable, describe the steps required to install your project for the Installation section.",
-        name: 'installation'
-    },
-    {
-        type: 'input',
-        message: "Provide instructions and examples of your project in use for the Usage section.",
-        name: 'usage'
-    },
-    {
-        type: 'input',
-        message: "If applicable, provide guidelines on how other developers can contribute to your project.",
-        name: 'contributing'
-    },
-    {
-        type: 'input',
-        message: "If applicable, provide any tests written for your application and provide examples on how to run them.",
-        name: 'tests'
-    },
-    {
-        type: 'list',
-        message: "Choose a license for your project.",
-        choices: ['GNU AGPLv3', 'GNU GPLv3', 'GNU LGPLv3', 'Mozilla Public License 2.0', 'Apache License 2.0', 'MIT License', 'Boost Software License 1.0', 'The Unlicense'],
-        name: 'license'
-    }
-];
+    ]);
+} 
 
-function writeToFile(fileName, data) {
-    fs.writeFile(fileName, data, err => {
-        if (err) {
-          return console.log(err);
-        }
-      
-        console.log("Success! Your README.md file has been generated")
-    });
-}
-
-const writeFileAsync = util.promisify(writeToFile);
-
-
-// Main function
+// Async function using util.promisify 
 async function init() {
     try {
-
-        // Prompt Inquirer questions
-        const userResponses = await inquirer.prompt(questions);
-        console.log("Your responses: ", userResponses);
-        console.log("Thank you for your responses! Fetching your GitHub data next...");
-    
-        // Call GitHub api for user info
-        const userInfo = await api.getUser(userResponses);
-        console.log("Your GitHub user info: ", userInfo);
-    
-        // Pass Inquirer userResponses and GitHub userInfo to generateMarkdown
-        console.log("Generating your README next...")
-        const markdown = generateMarkdown(userResponses, userInfo);
-        console.log(markdown);
-    
-        // Write markdown to file
-        await writeFileAsync('ExampleREADME.md', markdown);
-
-    } catch (error) {
-        console.log(error);
+        // Ask user questions and generate responses
+        const answers = await promptUser();
+        const generateContent = generateReadme(answers);
+        // Write new README.md to dist directory
+        await writeFileAsync('./dist/README.md', generateContent);
+        console.log('✔️  Successfully wrote to README.md');
+    }   catch(err) {
+        console.log(err);
     }
-};
+}
 
-init();
+init();  
