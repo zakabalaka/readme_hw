@@ -1,28 +1,31 @@
-function generateReadme(data) {
-    return `
-# ${data.projectTitle}
+// utils/generateReadme.js
+function generateReadme(answers) {
+  return `
+# ${answers.projectTitle}
 
 ## Description
-${data.description}
+${answers.description}
 
 ## Installation
-${data.installation}
+${answers.installation}
 
 ## Usage
-${data.usage}
+${answers.usage}
 
 ## License
-This project is licensed under the ${data.license} license.
+This project is licensed under the ${answers.license} license.
 
 ## Contributing
-${data.contributing}
+${answers.contributing}
 
 ## Tests
-${data.tests}
+${answers.tests}
 
 ## Questions
-For any issues, please contact me at ${data.email} or find me on GitHub: [${data.username}](https://github.com/${data.username}).
-    `;
+If you have any questions, please contact me at ${answers.email} or find me on GitHub: [${answers.username}](https://github.com/${answers.username}).
+
+  `;
 }
 
 module.exports = generateReadme;
+

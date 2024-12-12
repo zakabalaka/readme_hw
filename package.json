@@ -17,6 +17,6 @@
   "homepage": "https://github.com/zakabalaka/readme_hw#readme",
   "description": "",
   "dependencies": {
-    "inquirer": "^12.2.0"
+    "inquirer": "^7.3.3"
   }
 }
