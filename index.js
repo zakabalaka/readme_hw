@@ -1,5 +1,6 @@
-import { writeFileSync } from 'fs';
-import { prompt } from 'inquirer';
+import fs from 'fs';
+
+import inquirer from 'inquirer';
 
 async function promptUser() {
     return prompt([
