@@ -1,6 +1,6 @@
+const fs = require('fs');
 const inquirer = require('inquirer');
 
-// Prompt user for inputs
 async function promptUser() {
     return inquirer.prompt([
         {
@@ -64,15 +64,48 @@ async function promptUser() {
     ]);
 }
 
+// Function to generate the README content
+function generateREADME(data) {
+    return `
+# ${data.projectTitle}
+
+## Description
+${data.description}
+
+## Installation
+${data.installation}
+
+## Usage
+${data.usage}
+
+## License
+This project is licensed under the ${data.license} License.
+
+## Contributing
+${data.contributing}
+
+## Tests
+${data.tests}
+
+## Questions
+For issues, contact me at ${data.email}. You can also find me on GitHub: [${data.username}](https://github.com/${data.username}).
+
+    `;
+}
+
 // Async function to initialize the project
 async function init() {
     try {
         const answers = await promptUser();
-        console.log(answers);  // Just to see the answers from the user
-        // Add other logic to handle the data (e.g., writing to a file)
+        const readmeContent = generateREADME(answers);
+        
+        // Write the README content to a file
+        fs.writeFileSync('README.md', readmeContent, 'utf8');
+        console.log('README.md file has been generated successfully!');
     } catch (err) {
         console.error("Error occurred while prompting the user:", err);
     }
 }
 
 init();
+

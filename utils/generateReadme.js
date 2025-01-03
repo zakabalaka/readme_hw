@@ -1,4 +1,3 @@
-// utils/generateReadme.js
 function generateReadme(answers) {
   return `
 # ${answers.projectTitle}
@@ -23,9 +22,8 @@ ${answers.tests}
 
 ## Questions
 If you have any questions, please contact me at ${answers.email} or find me on GitHub: [${answers.username}](https://github.com/${answers.username}).
-
-  `;
+`;
 }
 
-module.exports = generateReadme;
+export default generateReadme;
 
