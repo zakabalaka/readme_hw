@@ -1,8 +1,8 @@
-const fs = require('fs');
-const inquirer = require('inquirer');
+import { writeFileSync } from 'fs';
+import { prompt } from 'inquirer';
 
 async function promptUser() {
-    return inquirer.prompt([
+    return prompt([
         {
             type: "input",
             name: "projectTitle",
@@ -100,7 +100,7 @@ async function init() {
         const readmeContent = generateREADME(answers);
         
         // Write the README content to a file
-        fs.writeFileSync('README.md', readmeContent, 'utf8');
+        writeFileSync('README.md', readmeContent, 'utf8');
         console.log('README.md file has been generated successfully!');
     } catch (err) {
         console.error("Error occurred while prompting the user:", err);
